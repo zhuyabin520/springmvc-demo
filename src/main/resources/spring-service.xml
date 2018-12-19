@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+">
+    <!--将service层的实现类交给spring容器去管理-->
+    <bean id="userService" class="com.qf.admin.service.impl.UserServiceImpl"/>
+    <!--将增强类交给spring容器去管理-->
+    <bean id="firstAdvice" class="com.qf.admin.advice.FirstAdvice"/>
+    <!--aop配置-->
+    <aop:config>
+        <!--定义切点-->
+        <!--第一个*表示匹配任何返回值类型-->
+        <!--第二个*表示匹配所有方法-->
+        <!--(..)匹配任意参数，有参数，多参数，没参数都可以匹配-->
+        <!--<aop:pointcut id="pc" expression="execution(* com.qf.admin.service.impl.UserServiceImpl.*(..))"/>-->
+        <aop:pointcut id="pc" expression="execution(* com.qf.admin.service.impl.UserServiceImpl.*(..))"/>
+
+
+        <!--定义切面-->
+        <aop:aspect ref="firstAdvice">
+            <!--定义前置增强-->
+            <!--<aop:before method="before" pointcut-ref="pc"/>-->
+            <!--定义后置增强-->
+            <!--<aop:after-returning method="afterReturning" pointcut-ref="pc"/>-->
+            <!--定义环绕增强-->
+            <!--<aop:around method="around" pointcut-ref="pc"/>-->
+            <aop:after-throwing method="afterException" pointcut-ref="pc"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
